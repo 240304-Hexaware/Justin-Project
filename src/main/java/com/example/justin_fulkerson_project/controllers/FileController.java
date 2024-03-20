@@ -37,10 +37,11 @@ public class FileController {
     private MetadataService metadataService;
 
     @PostMapping("/metadata")
-    public ResponseEntity<String> uploadMetadata(@RequestParam("specFile") MultipartFile specFile) {
+    public ResponseEntity<String> uploadMetadata(@RequestParam("specFile") MultipartFile specFile,
+                                                                @RequestParam("pathName") String pathName) {
         try {
             String jsonSpecFile = new String(specFile.getBytes(), StandardCharsets.UTF_8);
-            metadataService.parseAndSaveMetadata(jsonSpecFile);
+            metadataService.parseAndSaveMetadata(jsonSpecFile, pathName);
             return ResponseEntity.ok().body("Metadata uploaded successfully.");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading metadata.");

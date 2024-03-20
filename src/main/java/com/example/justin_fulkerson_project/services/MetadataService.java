@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,14 @@ public class MetadataService {
     @Autowired
     private FileMetadataRepository metadataRepository;
 
-    public void parseAndSaveMetadata(String jsonSpecFile) throws IOException {
+    @Autowired
+    private UserService userService;
+
+    public void parseAndSaveMetadata(String jsonSpecFile, String pathName) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(jsonSpecFile);
         JsonNode fieldsNode = rootNode.get("fields");
+
 
         List<FieldMetadata> fieldMetadataList = new ArrayList<>();
 
@@ -36,6 +41,9 @@ public class MetadataService {
                 int length = (lengthNode != null && !lengthNode.isNull()) ? lengthNode.asInt() : 0;
 
                 FieldMetadata fieldMetadata = new FieldMetadata(fieldName, startPosition, length);
+                fieldMetadata.setWhenUploaded(LocalDateTime.now());
+                //fieldMetadata.setWhoUploaded();
+                fieldMetadata.setPathName(pathName);
                 fieldMetadataList.add(fieldMetadata);
             }
         }

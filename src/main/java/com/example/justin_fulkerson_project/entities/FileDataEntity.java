@@ -3,6 +3,7 @@ package com.example.justin_fulkerson_project.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Document(collection = "files")
@@ -15,6 +16,16 @@ public class FileDataEntity {
     private Object fileContent;
 
     private Map<String, String> data;
+
+    private LocalDateTime timestamp;
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Map<String, String> getData() {
         return data;
